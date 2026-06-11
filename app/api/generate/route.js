@@ -8,6 +8,15 @@ function normalize(value) {
   return typeof value === "string" ? value.trim() : "";
 }
 
+function normalizeGeneratedPost(value) {
+  return value
+    .replace(/\\r\\n/g, "\n")
+    .replace(/\\n/g, "\n")
+    .replace(/\r\n/g, "\n")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
+}
+
 function buildPrompt(data) {
   return `Peran: kreator konten perempuan Indonesia yang menulis untuk akun sendiri, bukan untuk brand.
 Isi akun fokus pada review produk-produk yang dipakai perempuan dalam keseharian.
@@ -122,8 +131,8 @@ function parseGroqContent(text) {
   }
 
   return {
-    post1: parsed.post1,
-    post2: parsed.post2
+    post1: normalizeGeneratedPost(parsed.post1),
+    post2: normalizeGeneratedPost(parsed.post2)
   };
 }
 
